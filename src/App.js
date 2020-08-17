@@ -17,6 +17,10 @@ class App extends Component{
     this.getTotalBalance();
   }
 
+  componentDidUpdate(){
+    this.addStorage();
+  }
+
   addTransaction = add =>{
     const transactions = [...this.state.transactions,
     {
@@ -32,10 +36,7 @@ class App extends Component{
     transactions,
     description: '',
     amount:'',
-  },()=>{
-    this.getTotalBalance();
-    this.addStorage();
-  });
+  }, this.getTotalBalance);
 }
 
   addAmount = e =>{
