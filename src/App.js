@@ -69,6 +69,11 @@ class App extends Component{
     localStorage.setItem('calcMoney', JSON.stringify(this.state.transactions))
   }
 
+  deleteTransaction = key =>{
+    const transactions = this.state.transactions.filter(item => item.id !== key)
+    this.setState({transactions}, this.getTotalBalance)
+  }
+
   render(){
     return (
       <>
@@ -85,7 +90,10 @@ class App extends Component{
                   totalBalance={this.state.totalBalance}
                 />
   
-                <History transactions={this.state.transactions}/>
+                <History 
+                transactions={this.state.transactions}
+                deleteTransaction={this.deleteTransaction}
+                />
   
                 <Operation 
                   addTransaction={this.addTransaction}

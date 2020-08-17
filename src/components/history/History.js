@@ -1,7 +1,7 @@
 import React from 'react';
 import HistoryItem from './HistoryItem';
 
-const History = ({transactions}) =>{
+const History = ({transactions, deleteTransaction}) =>{
     return(
     <section className="history">
         <h3>History</h3>
@@ -10,6 +10,7 @@ const History = ({transactions}) =>{
                 <HistoryItem
                     key = {item.id}
                     transaction={item}
+                    deleteTransaction={deleteTransaction}
                 />
             )}
             </ul>
