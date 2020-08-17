@@ -5,21 +5,25 @@ import Operation from './components/operation/Operation';
 
 class App extends Component{
   state = {
-    transactions: [],
+    transactions: JSON.parse(localStorage.getItem('calcMoney')) || [],
     description:'',
     amount: '',
     resultIncomes: 0,
     resultExpences: 0,
     totalBalance: 0,
   }
-  
+
+  componentWillMount(){
+    this.getTotalBalance();
+  }
+
   addTransaction = add =>{
     const transactions = [...this.state.transactions,
     {
       //eslint-disable-next-line
       id: `cmr${(+new Date).toString(16)}`,
       description: this.state.description,
-      amount: this.state.amount,
+      amount: parseFloat(this.state.amount),
       add
     } 
   ];
@@ -28,11 +32,14 @@ class App extends Component{
     transactions,
     description: '',
     amount:'',
-  },this.getTotalBalance);
+  },()=>{
+    this.getTotalBalance();
+    this.addStorage();
+  });
 }
 
   addAmount = e =>{
-    this.setState({amount: parseFloat(e.target.value)});
+    this.setState({amount: e.target.value});
   }
 
   addDescription = e =>{
@@ -56,6 +63,10 @@ class App extends Component{
       resultExpences,
       totalBalance,
     })
+  }
+
+  addStorage(){
+    localStorage.setItem('calcMoney', JSON.stringify(this.state.transactions))
   }
 
   render(){
