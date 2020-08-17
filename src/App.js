@@ -1,72 +1,73 @@
-import React from 'react';
+import React, { Component } from 'react';
+import Total from './components/total/Total';
+import History from './components/history/History';
+import Operation from './components/operation/Operation';
 
-function App() {
-  return (
-    <>
-      <header>
-        <h1>Wallet</h1>
-        <h2>Income and Expense calculator</h2>
-      </header>
+class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      transactions: [],
+      description:'',
+      amount: '',
+    }
+  }
+  
+  addTransaction = add =>{
+    const transactions = [...this.state.transactions,
+    {
+      //eslint-disable-next-line
+      id: `cmr${(+new Date).toString(16)}`,
+      description: this.state.description,
+      amount: this.state.amount,
+      add
+    } 
+  ];
 
-      <main>
-          <div class="container">
-              <section class="total">
-                  <header class="total__header">
-                      <h3>Balance</h3>
-                      <p class="total__balance">0 $</p>
-                  </header>
-                  <div class="total__main">
-                      <div class="total__main-item total__income">
-                          <h4>Incomes</h4>
-                          <p class="total__money total__money-income">
-                              +0 $
-                          </p>
-                      </div>
-                      <div class="total__main-item total__expenses">
-                          <h4>Expense</h4>
-                         <p class="total__money total__money-expenses">
-                              -0 $
-                          </p>
-                      </div>
-                  </div>
-              </section>
+  this.setState({
+    transactions,
+    description: '',
+    amount:'',
+  });
+}
 
-            <section class="history">
-                <h3>History</h3>
-                <ul class="history__list">
-                    <li class="history__item history__item-plus">Salary
-                        <span class="history__money">+30000 $</span>
-                        <button class="history__delete">x</button>
-                    </li>
+  addAmount = e =>{
+    this.setState({amount: e.target.value});
+  }
 
-                    <li class="history__item  history__item-minus">Paid a debt
-                        <span class="history__money">-10000 $</span>
-                        <button class="history__delete">x</button>
-                    </li>
-                </ul>
-            </section>
+  addDescription = e =>{
+    this.setState({description: e.target.value});
+  }
 
-            <section class="operation">
-                <h3>New operation</h3>
-                <form id="form">
-                    <label>
-                        <input type="text" class="operation__fields operation__name" placeholder="Reason" />
-                    </label>
-                    <label>
-                        <input type="number" class="operation__fields operation__amount" placeholder="Enter amount" />
-                    </label>
-                    <div class="operation__btns">
-                        <button type="submit" class="operation__btn operation__btn-subtract">EXPENSE</button>
-                        <button type="submit" class="operation__btn operation__btn-add">INCOME</button>
-                    </div>
+  render(){
+    return (
+      <>
+          <header>
+              <h1>Wallet</h1>
+              <h2>Income and Expense calculator</h2>
+          </header>
+  
+          <main>
+              <div className="container">
+                <Total/>
+  
+                <History transactions={this.state.transactions}/>
+  
+                <Operation 
+                  addTransaction={this.addTransaction}
+                  addDescription = {this.addDescription}
+                  addAmount = {this.addAmount}
+                  description = {this.state.description}
+                  amount = {this.state.amount}
+                  //addTransaction, addDescription, addAmount, description, amount
+                />
+              </div>
+          </main>
+  
+      </>
+    );
+  }
 
-                </form>
-            </section>
-        </div>
-    </main>
-
-    </>/*end of React.Fragment */
-  );
 }
 
 export default App;
